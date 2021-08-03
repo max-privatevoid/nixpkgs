@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchurl, fetchgit
+{ lib, stdenv, fetchurl, fetchFromGitLab
 , makeWrapper, autoreconfHook, fetchpatch
 , coreutils, libxml2, gnutls, perl, python3, attr, glib, docutils
 , iproute2, readline, lvm2, util-linux, systemd, libpciaccess, gettext
@@ -41,8 +41,9 @@ in stdenv.mkDerivation rec {
         sha256 = "sha256-uKEu9zSg6HrHx7yb8H25Yvt8r6yAGcXVTGNCZc+CDNY=";
       }
     else
-      fetchgit {
-        url = "https://gitlab.com/libvirt/libvirt.git";
+      fetchFromGitLab {
+        owner = pname;
+        repo = pname;
         rev = "v${version}";
         sha256 = "sha256-tmObwpXxWgIILGxhUT80ZjtEI78nl34TRDog0nO9LPE=";
         fetchSubmodules = true;
