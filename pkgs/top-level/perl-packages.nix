@@ -7,7 +7,7 @@
 
 { config
 , stdenv, lib, buildPackages, pkgs
-, fetchurl, fetchgit, fetchpatch, fetchFromGitHub
+, fetchurl, fetchgit, fetchpatch, fetchFromGitHub, fetchFromGitLab
 , perl, overrides, buildPerl, shortenPerlShebang
 }:
 
@@ -19785,9 +19785,11 @@ let
   SysVirt = buildPerlModule rec {
     pname = "Sys-Virt";
     version = "7.5.0";
-   src = fetchurl {
-      url = "mirror://cpan/authors/id/D/DA/DANBERR/Sys-Virt-v7.5.0.tar.gz";
-      sha256 = "sha256-eQlrB/3ZHxGY3ZC8L5N0HKVro1czONKximgQp4XDPZQ=";
+    src = fetchFromGitLab {
+      owner = "libvirt";
+      repo = "libvirt-perl";
+      rev = "v7.5.0";
+      sha256 = "sha256-5tYL42tzPxYnpeu6n1HJTt2z3/xq1qbi9A/A0ijKagE=";
     };
     nativeBuildInputs = [ pkgs.pkg-config ];
     buildInputs = [ pkgs.libvirt CPANChanges TestPod TestPodCoverage XMLXPath ];
