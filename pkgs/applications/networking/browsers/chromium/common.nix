@@ -96,7 +96,7 @@ let
   # https://source.chromium.org/chromium/chromium/src/+/master:build/linux/unbundle/replace_gn_files.py
   gnSystemLibraries = [
     # TODO:
-    # "ffmpeg"
+    "ffmpeg"
     # "snappy"
     "flac"
     "libjpeg"
