@@ -17,6 +17,10 @@ let
     then "local-discovery"
     else "server";
 
+  initProfiles = [
+    profile
+  ] ++ lib.optional cfg.badgerDatastore "badgerds";
+
   splitMulitaddr = addrRaw: lib.tail (lib.splitString "/" addrRaw);
 
   multiaddrToListenStream = addrRaw:
@@ -186,6 +190,12 @@ in
         default = false;
       };
 
+      badgerDatastore = mkOption {
+        type = types.bool;
+        description = "Whether to configure the node to use the experimental badger datastore.";
+        default = false;
+      };
+
       serviceFdlimit = mkOption {
         type = types.nullOr types.int;
         default = null;
@@ -250,7 +260,7 @@ in
 
       preStart = ''
         if [[ ! -f "$IPFS_PATH/config" ]]; then
-          ipfs init ${optionalString cfg.emptyRepo "-e"} --profile=${profile}
+          ipfs init ${optionalString cfg.emptyRepo "-e"} --profile=${lib.concatStringsSep "," initProfiles}
         else
           # After an unclean shutdown this file may exist which will cause the config command to attempt to talk to the daemon. This will hang forever if systemd is holding our sockets open.
           rm -vf "$IPFS_PATH/api"
