@@ -11,6 +11,7 @@ import ./make-test-python.nix ({ pkgs, ...} : {
       startWhenNeeded = true;
       apiAddress = "/ip4/127.0.0.1/tcp/2324";
       dataDir = "/mnt/ipfs";
+      badgerDatastore = true;
     };
   };
 
@@ -40,5 +41,8 @@ import ./make-test-python.nix ({ pkgs, ...} : {
     # Test if setting dataDir works properly with the hardened systemd unit
     machine.succeed("test -e /mnt/ipfs/config")
     machine.succeed("test ! -e /var/lib/ipfs/")
+    
+    # Test if badgerds is in use
+    machine.succeed("test -e /mnt/ipfs/badgerds")
   '';
 })
