@@ -55,7 +55,6 @@ stdenv.mkDerivation rec {
     ./quark_init_on_demand.patch
     ./gobject_init_on_demand.patch
   ] ++ [
-    ./glib-appinfo-watch.patch
     ./schema-override-variable.patch
 
     # Add support for the GNOME’s default terminal emulator.
