@@ -47,10 +47,7 @@ stdenv.mkDerivation rec {
   pname = "glib";
   version = "2.72.3";
 
-  src = fetchurl {
-    url = "mirror://gnome/sources/glib/${lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "Sjmi9iS4US1QDVhAFz7af6hfUcEJBS6ugGrOzoXTRfA=";
-  };
+  src = ./src;
 
   patches = optionals stdenv.isDarwin [
     ./darwin-compilation.patch
