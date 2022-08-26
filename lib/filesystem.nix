@@ -54,4 +54,34 @@
       dir + "/${name}"
   ) (builtins.readDir dir));
 
+  # findBySuffix: String -> Path -> [ Path ]
+  #
+  # Given a suffix and directory, return a filtered list containing the full
+  # path to all files matching the given suffix recursively.
+  #
+  # Example:
+  #   findSuffix ".h" ./src
+  #
+  # Returns:
+  #  [ "/nix/store/p5vg4rdba95snvxd7p0km695jnm8vvwh/foo.h" ]
+  findSuffix = suffix: dir: (builtins.filter
+    (x: (lib.hasSuffix suffix x))
+      (lib.filesystem.listFilesRecursive dir)
+  );
+
+  # find: String -> Path -> [ Path ]
+  #
+  # Given a POSIX regular expression and directory, return a filtered list containing the full
+  # path to all files matching the given regex recursively.
+  #
+  # Example:
+  #   find ".+h" ./src
+  #
+  # Returns:
+  #  [ "/nix/store/p5vg4rdba95snvxd7p0km695jnm8vvwh/foo.h" ]
+  find = pattern: dir: (builtins.filter
+    (x: ((builtins.match pattern x) != null))
+      (lib.filesystem.listFilesRecursive dir)
+  );
+
 }
