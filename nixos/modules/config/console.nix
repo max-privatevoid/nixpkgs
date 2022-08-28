@@ -12,7 +12,7 @@ let
     LOCALE_ARCHIVE=${config.i18n.glibcLocales}/lib/locale/locale-archive \
     LANG=${config.i18n.defaultLocale} \
     LC_IDENTIFICATION=${config.i18n.defaultLocale} \
-    locale -k identification-codeset | grep -i UTF-8 \
+    locale -k identification-codeset | grep -qi UTF-8 \
   '';
 
   optimizedKeymap = pkgs.runCommand "keymap" {
@@ -199,6 +199,10 @@ in
           "vt.default_grn=${makeColor 1 cfg.colors}"
           "vt.default_blu=${makeColor 2 cfg.colors}"
         ];
+      })
+
+      (mkIf (!config.boot.initrd.systemd.enable) {
+        boot.initrd.extraUtilsCommands = "copy_bin_and_libs ${pkgs.glibc.bin}/bin/locale";
       })
 
       (mkIf (cfg.earlySetup && !config.boot.initrd.systemd.enable) {
