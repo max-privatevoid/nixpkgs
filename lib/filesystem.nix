@@ -65,7 +65,7 @@
   # Returns:
   #  [ "/nix/store/p5vg4rdba95snvxd7p0km695jnm8vvwh/foo.h" ]
   findSuffix = suffix: dir: (builtins.filter
-    (x: (lib.hasSuffix suffix x))
+    (x: (lib.hasSuffix suffix (toString x)))
       (lib.filesystem.listFilesRecursive dir)
   );
 
