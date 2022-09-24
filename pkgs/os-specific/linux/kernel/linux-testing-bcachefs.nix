@@ -2,9 +2,9 @@
 , pkgs
 , fetchpatch
 , kernel
-, date ? "2022-09-24"
-, commit ? "e46b9641edd5ed1825f344dbc78cbaea17c8e250"
-, diffHash ? "sha256-HA5wkPRhcCJWe8RvWjWoh3lDjtnYFXFdPESYCzWCovw="
+, bcachefsCommitDate ? "2022-09-24"
+, bcachefsCommitId ? "e46b9641edd5ed1825f344dbc78cbaea17c8e250"
+, bcachefsDiffHash ? "sha256-HA5wkPRhcCJWe8RvWjWoh3lDjtnYFXFdPESYCzWCovw="
 , kernelPatches # must always be defined in bcachefs' all-packages.nix entry because it's also a top-level attribute supplied by callPackage
 , argsOverride ? {}
 , ...
@@ -13,7 +13,7 @@
 # NOTE: bcachefs-tools should be updated simultaneously to preserve compatibility
 (kernel.override ( args // {
   argsOverride = {
-    version = "${kernel.version}-bcachefs-unstable-${date}";
+    version = "${kernel.version}-bcachefs-unstable-${bcachefsCommitDate}";
 
     extraMeta = {
       branch = "master";
@@ -23,12 +23,12 @@
 
   kernelPatches = [
     {
-      name = "bcachefs-${commit}";
+      name = "bcachefs-${bcachefsCommitId}";
 
       patch = fetchpatch {
-        name = "bcachefs-${commit}.diff";
-        url = "https://evilpiepirate.org/git/bcachefs.git/rawdiff/?id=${commit}&id2=v${lib.versions.majorMinor kernel.version}";
-        sha256 = diffHash;
+        name = "bcachefs-${bcachefsCommitId}.diff";
+        url = "https://evilpiepirate.org/git/bcachefs.git/rawdiff/?id=${bcachefsCommitId}&id2=v${lib.versions.majorMinor kernel.version}";
+        sha256 = bcachefsDiffHash;
 
         postFetch = ''
           ${pkgs.buildPackages.patchutils}/bin/filterdiff -x 'a/block/bio.c' "$out" > "$tmpfile"
